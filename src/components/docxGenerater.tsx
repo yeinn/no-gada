@@ -98,7 +98,7 @@ const DocxGenerator: React.FC<TemplateGeneratorProps> = () => {
   }
 
   // 결과 문서 다운로드
-  const downloadDocument = () => {
+  const downloadDocument = async () => {
     if (outputFiles.length > 0) {
       for(let i = 0; i< outputFiles.length; i ++){
         const link = document.createElement('a');
