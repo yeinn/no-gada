@@ -88,15 +88,33 @@ const DocxGenerator: React.FC<TemplateGeneratorProps> = () => {
     });
   };
 
+  //chorme multi file 다운로드를 위해 10개 마다 대기
+  function pause(msec: number) {
+    return new Promise(
+        (resolve) => {
+            setTimeout(resolve, msec || 1000);
+        }
+    );
+  }
+
   // 결과 문서 다운로드
   const downloadDocument = () => {
     if (outputFiles.length > 0) {
-      outputFiles.forEach((file, idx) => {
+      for(let i = 0; i< outputFiles.length; i ++){
         const link = document.createElement('a');
-        link.href = URL.createObjectURL(file);
-        link.download = `${outputFileNames[idx]}.docx`;
-        link.click();
-      });
+        link.href = URL.createObjectURL(outputFiles[i]);
+        link.download = `${outputFileNames[i]}.docx`;
+        
+        if (i % 10 ==0) {
+          await pause(1000).then(
+            ()=>{
+              link.click();
+            }
+          );
+        } else{
+          link.click();
+        }
+      }
     }
   };
 
